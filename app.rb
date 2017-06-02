@@ -44,13 +44,8 @@ def main
   response = service.list_events(calendar_id,
                                  time_min: Time.new(Time.now.year, Time.now.month).iso8601,
                                  time_max: Time.new(Time.now.year, Time.now.month, 31).iso8601
-                                 # max_results: 5,
-                                 # single_events: true,
-                                 # order_by: 'startTime',
-                                 # time_min: Time.now.iso8601)
                                 )
 
-  puts "Upcoming events:"
   puts "No upcoming events found" if response.items.empty?
   work_management_main(response)
 end
