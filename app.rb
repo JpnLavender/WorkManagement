@@ -1,7 +1,7 @@
 require 'google/apis/calendar_v3'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
-require "./work_management"
+# require "./work_management"
 
 require 'fileutils'
 
@@ -49,5 +49,20 @@ def main
   puts "No upcoming events found" if response.items.empty?
   work_management_main(response)
 end
+
+def work_management_main(response)
+  works = []
+  response.items.each do |event|
+    if event.summary =~ /#{ENV.fetch('WORK')}/
+      start_time = event.start.date || event.start.date_time
+      finish_time = event.end.date || event.end.date_time
+      work_time =  (Time.parse(finish_time.to_s) - Time.parse(start_time.to_s) - 1800) / 3600
+      works << work_time
+    end
+  end
+  time = works.reduce(:+)
+  puts "#{Date.new(Time.now.year, Time.now.month, -1).month}月現在時点の時給#{(time * ENV.fetch('HOURLY_WAGE').to_i).to_i}円"
+end
+
 
 main
