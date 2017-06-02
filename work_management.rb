@@ -7,7 +7,7 @@ def work_management_main(response)
     if event.summary =~ /#{ENV.fetch('WORK')}/
       start_time = event.start.date || event.start.date_time
       finish_time = event.end.date || event.end.date_time
-      work_time =  (Time.parse(finish_time.to_s) - Time.parse(start_time.to_s) - 1800).to_i / 3600
+      work_time =  (Time.parse(finish_time.to_s) - Time.parse(start_time.to_s) - 1800) / 3600
       works << work_time
     end
   end
